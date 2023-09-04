@@ -7,7 +7,7 @@ int TurnSignalState = LOW;
 int StopSignalState = LOW;
 int RunSignalState = LOW;
 
-int brightnes2[4] = {80,40,20,0};
+int brightens2[4] = {80,40,20,0};
 
 CRGB TurnSignalStrip[TS_LED_NUMBER];
 CRGB StopSignalStrip[SS_LED_NUMBER];
@@ -21,7 +21,7 @@ unsigned long currentMillis = 0;
 unsigned long previousMillis = 0;
 
 timeObj STOPTimer(10.0*1000.0,false);
-bool trigerOnce = true;
+bool triggerOnce = true;
 
 void timeLoop (unsigned long int startMillis, unsigned long int interval) { // delay substitute function
   while (millis() - startMillis < interval) {}
@@ -30,21 +30,21 @@ void timeLoop (unsigned long int startMillis, unsigned long int interval) { // d
 void StartUpAnimation(){
   for(int i=0;i<=SS_LED_NUMBER;i++){
     for(int y=0;y<SS_LED_NUMBER-i;y++){
-      TurnSignalStrip[y] = CHSV( 150, 150, brightnes2[0]);
+      TurnSignalStrip[y] = CHSV( 150, 150, brightens2[0]);
       TurnSignalStrip[y-1] = CHSV( 0, 0, 0);
 
-      StopSignalStrip[y] = CHSV( 150, 150, brightnes2[0]);
+      StopSignalStrip[y] = CHSV( 150, 150, brightens2[0]);
       StopSignalStrip[y-1] = CHSV( 0, 0, 0);
 
-      RunningStrip[y] = CHSV( 150, 150, brightnes2[0]);
+      RunningStrip[y] = CHSV( 150, 150, brightens2[0]);
       RunningStrip[y-1] = CHSV( 0, 0, 0);
 
       FastLED[TURN_INDEX].showLeds();
       FastLED[STOP_INDEX].showLeds();
       FastLED[RUN_INDEX].showLeds();
-      timeLoop(millis(),SPEED_CONTROLL-40);
+      timeLoop(millis(),SPEED_CONTROL-40);
     }
-    timeLoop(millis(),SPEED_CONTROLL+20);
+    timeLoop(millis(),SPEED_CONTROL+20);
   }
 
   timeLoop(millis(),1500);
@@ -82,11 +82,11 @@ void loop() {
   if(TurnSignalState == HIGH){
     for(int dot=0;dot<TS_LED_NUMBER;dot++){
       if(dot<=TS_LED_NUMBER-2){
-        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightnes2[0]);
-        TurnSignalStrip[dot+1] = CHSV( TURN_HUE, TURN_SAT, brightnes2[1]);
-        TurnSignalStrip[dot+2] = CHSV( TURN_HUE, TURN_SAT, brightnes2[2]);
+        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightens2[0]);
+        TurnSignalStrip[dot+1] = CHSV( TURN_HUE, TURN_SAT, brightens2[1]);
+        TurnSignalStrip[dot+2] = CHSV( TURN_HUE, TURN_SAT, brightens2[2]);
       }else{
-        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightnes2[0]);
+        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightens2[0]);
       }
       FastLED[TURN_INDEX].showLeds();
       currentMillis = previousMillis = millis();
@@ -97,11 +97,11 @@ void loop() {
     }
     for(int dot=0;dot<TS_LED_NUMBER;dot++){
       if(dot<=TS_LED_NUMBER-2){
-        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightnes2[3]);
-        TurnSignalStrip[dot+1] = CHSV( TURN_HUE, TURN_SAT, brightnes2[2]);
-        TurnSignalStrip[dot+2] = CHSV( TURN_HUE, TURN_SAT, brightnes2[1]);
+        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightens2[3]);
+        TurnSignalStrip[dot+1] = CHSV( TURN_HUE, TURN_SAT, brightens2[2]);
+        TurnSignalStrip[dot+2] = CHSV( TURN_HUE, TURN_SAT, brightens2[1]);
       }else{
-        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightnes2[3]);
+        TurnSignalStrip[dot] = CHSV( TURN_HUE, TURN_SAT, brightens2[3]);
       }
       FastLED[TURN_INDEX].showLeds();
       currentMillis = previousMillis = millis();
@@ -118,10 +118,10 @@ void loop() {
   
   if(StopSignalState == HIGH){
     if(fStop){
-      trigerOnce = true;
+      triggerOnce = true;
       for(int i=0;i<15;i++){
         if(i%2 !=0){
-          fill_solid(StopSignalStrip,SS_LED_NUMBER,CHSV(STOP_HUE,STOP_SAT,brightnes2[0]));
+          fill_solid(StopSignalStrip,SS_LED_NUMBER,CHSV(STOP_HUE,STOP_SAT,brightens2[0]));
           FastLED[STOP_INDEX].showLeds();
         }else{
           fill_solid(StopSignalStrip,SS_LED_NUMBER,CRGB::Black);
@@ -131,7 +131,7 @@ void loop() {
         timeLoop(millis(),45);
       }
     }else{
-      fill_solid(StopSignalStrip,SS_LED_NUMBER,CHSV(STOP_HUE,STOP_SAT,brightnes2[0]));
+      fill_solid(StopSignalStrip,SS_LED_NUMBER,CHSV(STOP_HUE,STOP_SAT,brightens2[0]));
       FastLED[STOP_INDEX].showLeds();
     }
     // if X time passed after pedal is DEpressed or hold - make animation active again, else static light
@@ -139,9 +139,9 @@ void loop() {
   else if(StopSignalState == LOW){
     fill_solid(StopSignalStrip,SS_LED_NUMBER,CRGB::Black);
     FastLED[STOP_INDEX].showLeds();
-    if(trigerOnce){
+    if(triggerOnce){
       STOPTimer.start();
-      trigerOnce = false;
+      triggerOnce = false;
     }
   }
   
@@ -169,6 +169,6 @@ void loop() {
   
   if(STOPTimer.ding()){
     fStop = true;
-    trigerOnce = true;
+    triggerOnce = true;
   }
 }
