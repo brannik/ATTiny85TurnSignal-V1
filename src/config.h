@@ -20,9 +20,9 @@
 #define RUN_INDEX       2
 #define STOP_INDEX      1
 
-#define SPEED_CONTROLL 40 // in milliseconds
+#define SPEED_CONTROL 40 // in milliseconds
 
-    // hue/saturation setup
+// hue/saturation setup
 #define TURN_HUE    32
 #define TURN_SAT    255
 
